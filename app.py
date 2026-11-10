@@ -4,7 +4,6 @@ import gradio as gr
 
 from predict import model, predict_order
 
-
 # Read available categories from the trained model
 preprocessor = model.named_steps["preprocessing"]
 
@@ -48,7 +47,6 @@ def run_prediction(
 
 
 with gr.Blocks(title="Late Delivery Predictor") as demo:
-
     gr.Markdown(
         """
         # Late Delivery Prediction System

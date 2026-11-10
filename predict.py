@@ -21,10 +21,7 @@ with INFO_PATH.open("r", encoding="utf-8") as file:
 
 # Model configuration
 THRESHOLD = float(model_info["threshold"])
-FEATURES = (
-    model_info["numeric_features"]
-    + model_info["categorical_features"]
-)
+FEATURES = model_info["numeric_features"] + model_info["categorical_features"]
 
 LATE_CLASS = 1
 
@@ -114,25 +111,26 @@ def predict_order(
         "distance_km": numeric_values["distance_km"],
         "items": int(numeric_values["items"]),
         "hour": numeric_values["hour"],
-        "prep_minutes": (
-            numeric_values.get("prep_minutes")
-        ),
+        "prep_minutes": (numeric_values.get("prep_minutes")),
         "courier_months": numeric_values["courier_months"],
         "weather": weather.strip(),
         "day_type": day_type.strip(),
         "vehicle": vehicle.strip(),
     }
 
-    input_df = pd.DataFrame([input_data], columns=[
-        "distance_km",
-        "items",
-        "hour",
-        "prep_minutes",
-        "courier_months",
-        "weather",
-        "day_type",
-        "vehicle",
-    ])
+    input_df = pd.DataFrame(
+        [input_data],
+        columns=[
+            "distance_km",
+            "items",
+            "hour",
+            "prep_minutes",
+            "courier_months",
+            "weather",
+            "day_type",
+            "vehicle",
+        ],
+    )
 
     # Calculate late-delivery probability
     probabilities = model.predict_proba(input_df)[0]
@@ -143,9 +141,7 @@ def predict_order(
     # Apply business decision threshold
     is_late = late_probability >= THRESHOLD
 
-    voucher_decision = (
-        "Issue voucher" if is_late else "No voucher"
-    )
+    voucher_decision = "Issue voucher" if is_late else "No voucher"
 
     return {
         "late_probability": round(late_probability, 4),
